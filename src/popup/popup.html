@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ShootMe</title>
+<style>
+  :root { --bg:#fff; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --brand:#4338ca; --good:#047857; --bad:#b91c1c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#111827; --fg:#e5e7eb; --muted:#94a3b8; --line:#1f2937; --brand:#818cf8; --good:#34d399; --bad:#f87171; }
+  }
+  * { box-sizing: border-box; }
+  body { width: 300px; margin: 0; padding: 16px; background: var(--bg); color: var(--fg);
+         font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  h1 { font-size: 15px; margin: 0 0 2px; }
+  p { margin: 0 0 12px; font-size: 12.5px; color: var(--muted); }
+  .state { display: flex; gap: 8px; align-items: center; font-size: 13px; padding: 10px 12px;
+           border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); flex: none; }
+  .dot.bad { background: var(--bad); }
+  button { width: 100%; font: inherit; font-weight: 650; font-size: 13.5px; padding: 10px;
+           border-radius: 9px; border: 1px solid transparent; background: var(--brand); color: #fff; cursor: pointer; }
+  button.ghost { background: transparent; border-color: var(--line); color: var(--fg); margin-top: 8px; }
+  ol { margin: 4px 0 0; padding-left: 18px; font-size: 12.5px; color: var(--muted); }
+  ol li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+  <h1>ShootMe</h1>
+  <p>Outreach drafts from LinkedIn profiles.</p>
+  <div class="state"><span class="dot" id="dot"></span><span id="stateText">Checking...</span></div>
+  <button id="settings" type="button">Open settings</button>
+  <button class="ghost" id="help" type="button">How to use it</button>
+  <ol id="steps" hidden>
+    <li>Open someone's LinkedIn profile.</li>
+    <li>Reveal their email in Apollo.</li>
+    <li>Click the purple Draft email button, bottom right.</li>
+    <li>Pick a goal, click Generate, read it, then Open in Gmail.</li>
+  </ol>
+<script src="popup.js"></script>
+</body>
+</html>

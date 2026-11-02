@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ShootMe settings</title>
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --fg: #0f172a; --muted: #64748b;
+    --line: #e2e8f0; --field: #f8fafc; --brand: #4338ca; --good: #047857; --bad: #b91c1c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1120; --card: #111827; --fg: #e5e7eb; --muted: #94a3b8;
+            --line: #1f2937; --field: #0f172a; --brand: #818cf8; --good: #34d399; --bad: #f87171; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 16px 80px; background: var(--bg); color: var(--fg);
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 26px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; margin-bottom: 18px; }
+  section h2 { font-size: 15px; margin: 0 0 4px; }
+  section .why { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+  label { display: block; font-size: 12px; font-weight: 650; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); margin: 16px 0 6px; }
+  label:first-of-type { margin-top: 0; }
+  input[type=text], input[type=password], input[type=number], select, textarea {
+    width: 100%; padding: 10px 12px; font-size: 14px; font-family: inherit; color: var(--fg);
+    background: var(--field); border: 1px solid var(--line); border-radius: 9px;
+  }
+  textarea { min-height: 150px; resize: vertical; line-height: 1.55; }
+  .hint { font-size: 12.5px; color: var(--muted); margin: 6px 0 0; }
+  .hint a { color: var(--brand); }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .row > div { flex: 1 1 200px; }
+  .check { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; }
+  .check input { margin-top: 3px; }
+  .check span { font-size: 13.5px; }
+  .check b { display: block; font-size: 14px; }
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; background: var(--card); border-top: 1px solid var(--line);
+  }
+  .bar .inner { max-width: 720px; margin: 0 auto; width: 100%; display: flex; align-items: center; gap: 12px; }
+  button {
+    font: inherit; font-size: 14px; font-weight: 650; padding: 10px 18px;
+    border-radius: 9px; border: 1px solid transparent; cursor: pointer;
+  }
+  .primary { background: var(--brand); color: #fff; }
+  .ghost { background: transparent; border-color: var(--line); color: var(--fg); }
+  #status { font-size: 13px; color: var(--muted); }
+  #status.good { color: var(--good); }
+  #status.bad { color: var(--bad); }
+  .spacer { flex: 1; }
+  code { background: var(--field); padding: 1px 5px; border-radius: 5px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ShootMe settings</h1>
+  <p class="sub">Fill this in once. Everything is stored on this computer only.</p>
+
+  <section>
+    <h2>1. Your Claude key</h2>
+    <p class="why">This is what writes the emails. Get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer">console.anthropic.com</a>, add a few dollars of credit, then paste the key here. It starts with <code>sk-ant-</code>.</p>
+    <label for="apiKey">Claude API key</label>
+    <input id="apiKey" type="password" placeholder="sk-ant-..." autocomplete="off" spellcheck="false" />
+    <p class="hint">Stored only in this browser profile. It is never sent anywhere except to Anthropic when you click Generate.</p>
+    <div class="row">
+      <div>
+        <label for="model">Model</label>
+        <select id="model"></select>
+        <p class="hint" id="modelNote"></p>
+      </div>
+      <div>
+        <label for="effort">Effort</label>
+        <select id="effort">
+          <option value="low">Low, fastest and cheapest</option>
+          <option value="medium">Medium</option>
+          <option value="high">High, slowest and most considered</option>
+        </select>
+        <p class="hint">Low is plenty for a short email.</p>
+      </div>
+    </div>
+    <div class="check">
+      <button class="ghost" id="test" type="button">Test my key</button>
+      <span id="testResult" class="hint"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Who the email is from</h2>
+    <p class="why">Claude uses this to introduce you. Keep it short and factual.</p>
+    <div class="row">
+      <div>
+        <label for="senderName">Your name</label>
+        <input id="senderName" type="text" placeholder="Shreyans Jain" />
+      </div>
+      <div>
+        <label for="senderRole">Your role</label>
+        <input id="senderRole" type="text" placeholder="founder at Acme, final year CS at NSUT" />
+      </div>
+    </div>
+    <label for="senderPitch">What you are working on, in one or two lines</label>
+    <textarea id="senderPitch" style="min-height:80px" placeholder="Building a tool that turns support tickets into product specs. Three design partners, launching in March."></textarea>
+    <label for="senderLink">A link you are happy to share</label>
+    <input id="senderLink" type="text" placeholder="https://acme.com or your calendar link" />
+    <label for="signature">Sign off, added to the bottom of every email exactly as typed</label>
+    <textarea id="signature" style="min-height:80px" placeholder="Best,&#10;Shreyans&#10;acme.com"></textarea>
+  </section>
+
+  <section>
+    <h2>3. How the emails should read</h2>
+    <p class="why">This is the base prompt. It applies to every email, and the profile plus the goal you pick in the panel changes the rest.</p>
+    <label for="basePrompt">Base prompt</label>
+    <textarea id="basePrompt"></textarea>
+    <div class="row">
+      <div>
+        <label for="wordLimit">Word limit for the body</label>
+        <input id="wordLimit" type="number" min="40" max="300" step="10" />
+      </div>
+      <div>
+        <label for="defaultGoal">Default goal</label>
+        <select id="defaultGoal"></select>
+      </div>
+      <div>
+        <label for="defaultTone">Default tone</label>
+        <select id="defaultTone"></select>
+      </div>
+    </div>
+    <label for="subjectStyle">Subject line style</label>
+    <input id="subjectStyle" type="text" />
+  </section>
+
+  <section>
+    <h2>4. Gmail</h2>
+    <p class="why">Drafts open in Gmail in a new tab, with the address, subject and message already filled in. Nothing is ever sent for you.</p>
+    <label for="gmailAccountIndex">Which signed in Google account</label>
+    <select id="gmailAccountIndex">
+      <option value="0">The first one I signed into (usual answer)</option>
+      <option value="1">The second one</option>
+      <option value="2">The third one</option>
+      <option value="3">The fourth one</option>
+    </select>
+    <div class="check">
+      <input id="autoGenerate" type="checkbox" />
+      <span><b>Start writing the moment I open the panel</b>Saves a click. Costs a few cents even if you then close it.</span>
+    </div>
+    <div class="check">
+      <input id="autoOpenGmail" type="checkbox" />
+      <span><b>Jump straight to Gmail once the draft is ready</b>Fastest path, but you review the wording in Gmail instead of in the panel.</span>
+    </div>
+  </section>
+</div>
+
+<div class="bar">
+  <div class="inner">
+    <button class="primary" id="save" type="button">Save</button>
+    <button class="ghost" id="reset" type="button">Reset the base prompt</button>
+    <span class="spacer"></span>
+    <span id="status"></span>
+  </div>
+</div>
+
+<script type="module" src="options.js"></script>
+</body>
+</html>
